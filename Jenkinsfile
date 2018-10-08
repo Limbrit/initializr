@@ -7,9 +7,6 @@ node {
             stage('Clean') {
             sh 'mvn clean'
             }
-#            stage('Compile') {
-#            sh 'mvn compile'
-#            }
             stage('Test') {
             sh 'mvn test'
             }
