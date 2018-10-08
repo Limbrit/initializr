@@ -8,10 +8,10 @@ node {
             sh 'mvn clean'
             }
             stage('Test') {
-            sh 'mvn test'
+            sh 'sudo mvn test'
             }
             stage('Package') {
-            sh 'mvn package'
+            sh 'sudo mvn package'
             }
 			stage('Build Docker Image'){
 				sh 'sudo docker build -t limbrit/initializr:0.0.1 .'
