@@ -7,9 +7,12 @@ RUN echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 boolean tru
 RUN sudo apt-get -y install oracle-java8-installer -y
 RUN echo 'JAVA_HOME="/usr/lib/jvm/java-8-oracle"' >> /etc/environment
 RUN echo 'export JAVA_HOME="/usr/lib/jvm/java-8-oracle"' >> /root/.bashrc
-RUN apt-get install vim -y 
+RUN apt-get install vim -y
 RUN wget https://archive.apache.org/dist/tomcat/tomcat-7/v7.0.53/bin/apache-tomcat-7.0.53.tar.gz
 RUN tar xvf /apache-tomcat-7.0.53.tar.gz
 RUN sed -i '/^[ \t]*<tomcat-users>/,/^[ \t]*<\/tomcat-users>/c\<tomcat-users>\n<role rolename="role1"\/>\n<role rolename="manager-gui"\/>\n<role rolename="manager-script"\/>\n<user username="tomcat" password="tomcat" roles="manager-gui,manager-script"\/>\n<user username="both" password="both" roles="tomcat,role1"\/>\n<user username="role1" password="role1" roles="role1"\/>\n<\/tomcat-users>' /apache-tomcat-7.0.53/conf/tomcat-users.xml
-RUN cp /var/lib/jenkins/workspace/initializr/initializr-docs/target/*.jar /usr/local/tomcat/
+#deploying war file
+RUN wget https://github.com/Akshayalg/test1/raw/master/gameoflife-5.0.war
+RUN cp target/*.jar /apache-tomcat-7.0.53/webapps
+# Expose the default tomcat port
 EXPOSE 8097
