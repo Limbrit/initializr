@@ -12,7 +12,6 @@ RUN wget https://archive.apache.org/dist/tomcat/tomcat-7/v7.0.53/bin/apache-tomc
 RUN tar xvf /apache-tomcat-7.0.53.tar.gz
 RUN sed -i '/^[ \t]*<tomcat-users>/,/^[ \t]*<\/tomcat-users>/c\<tomcat-users>\n<role rolename="role1"\/>\n<role rolename="manager-gui"\/>\n<role rolename="manager-script"\/>\n<user username="tomcat" password="tomcat" roles="manager-gui,manager-script"\/>\n<user username="both" password="both" roles="tomcat,role1"\/>\n<user username="role1" password="role1" roles="role1"\/>\n<\/tomcat-users>' /apache-tomcat-7.0.53/conf/tomcat-users.xml
 #deploying war file
-RUN wget https://github.com/Akshayalg/test1/raw/master/gameoflife-5.0.war
-RUN cp target/*.jar /apache-tomcat-7.0.53/webapps
+RUN cp /var/lib/jenkins/workspace/initializr/initializr-docs/target/*.jar /apache-tomcat-7.0.53/webapps
 # Expose the default tomcat port
 EXPOSE 8097
