@@ -5,7 +5,7 @@ node {
             checkout scm
         } 
             stage('Clean') {
-            sh 'mvn clean'
+            sh 'sudo mvn clean'
             }
             stage('Test') {
             sh 'sudo mvn test'
