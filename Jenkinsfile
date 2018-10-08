@@ -7,6 +7,9 @@ node {
             stage('Clean') {
             sh 'sudo mvn clean'
             }
+	    stage('Compile') {
+            sh 'sudo mvn compile'
+            }
             stage('Test') {
             sh 'sudo mvn test'
             }
