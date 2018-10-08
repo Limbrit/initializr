@@ -7,9 +7,9 @@ node {
             stage('Clean') {
             sh 'mvn clean'
             }
-            stage('Compile') {
-            sh 'mvn compile'
-            }
+#            stage('Compile') {
+#            sh 'mvn compile'
+#            }
             stage('Test') {
             sh 'mvn test'
             }
@@ -17,16 +17,16 @@ node {
             sh 'mvn package'
             }
 			stage('Build Docker Image'){
-				sh 'sudo docker build -t limbrit/msworkbench:0.0.1 .'
+				sh 'sudo docker build -t limbrit/initializr:0.0.1 .'
 			}
 			stage('Push Docker Image'){
 			withCredentials([string(credentialsId: 'docker-pwd', variable: 'Dockerpwd')]) {
 				sh "sudo docker login -u limbrit -p ${Dockerpwd}"
 				}
-   				sh 'sudo docker push limbrit/msworkbench:0.0.1'
+   				sh 'sudo docker push limbrit/initializr:0.0.1'
 			}
 			stage('Running Docker on Local'){
-				sh 'sudo docker run -p 8085:8085 -d limbrit/msworkbench:0.0.1'
+				sh 'sudo docker run -p 8085:8085 -d limbrit/initializr:0.0.1'
 			}
             archiveArtifacts 'target/*.jar'
         
