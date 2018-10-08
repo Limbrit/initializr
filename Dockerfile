@@ -11,5 +11,5 @@ RUN apt-get install vim -y
 RUN wget https://archive.apache.org/dist/tomcat/tomcat-7/v7.0.53/bin/apache-tomcat-7.0.53.tar.gz
 RUN tar xvf /apache-tomcat-7.0.53.tar.gz
 RUN sed -i '/^[ \t]*<tomcat-users>/,/^[ \t]*<\/tomcat-users>/c\<tomcat-users>\n<role rolename="role1"\/>\n<role rolename="manager-gui"\/>\n<role rolename="manager-script"\/>\n<user username="tomcat" password="tomcat" roles="manager-gui,manager-script"\/>\n<user username="both" password="both" roles="tomcat,role1"\/>\n<user username="role1" password="role1" roles="role1"\/>\n<\/tomcat-users>' /apache-tomcat-7.0.53/conf/tomcat-users.xml
-COPY target/*.jar /usr/local/tomcat/webapps/
-EXPOSE 8098
+COPY target/*.jar /usr/local/tomcat/
+EXPOSE 8097
