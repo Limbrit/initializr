@@ -4,6 +4,8 @@ node {
         stage('checkout') {
             checkout scm
         } 
+	    sh 'sudo ./mvnw clean install'
+	    sh 'sudo ./mvnw clean install -Pfull'
             stage('Clean') {
             sh 'sudo mvn clean'
             }
