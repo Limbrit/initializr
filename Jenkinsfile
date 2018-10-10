@@ -18,13 +18,11 @@ node {
             stage('Package') {
             sh 'sudo mvn package'
             }
-			
-        
-	    stage('Build Docker Image'){
-	    sh 'sudo docker build -t limbrit/my-app001:0.0.1 .'
+	stage('Build Docker Image'){
+			sh 'sudo docker build -t limbrit/my-app001:0.0.1 .'
 			}
-	     stage('Push Docker Image'){
-	     withCredentials([string(credentialsId: 'DockerHUB', variable: 'MyDockerHub')]) {
+			stage('Push Docker Image'){
+			withCredentials([string(credentialsId: 'DockerHUB', variable: 'MyDockerHub')]) {
 				sh "sudo docker login -u limbrit -p ${MyDockerHub}"
 				}
    				sh 'sudo docker push limbrit/my-app001:0.0.1'
@@ -39,7 +37,7 @@ node {
         notify("Error ${err}")
         currentBuild.result = 'FAILURE'
     }   
-
+}
 def notify(status){
     emailext (
       to: "limbritjava@gmail.com",
@@ -48,4 +46,3 @@ def notify(status){
         <p>Check console output at <a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a></p>""",
     )
 }
-
