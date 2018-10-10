@@ -4,21 +4,30 @@ node {
         stage('checkout') {
             checkout scm
         } 
-	    sh 'sudo ./mvnw clean install'
-	    sh 'sudo ./mvnw clean install -Pfull'
+		sh 'sudo ./mvnw clean install'
+	        sh 'sudo ./mvnw clean install -Pfull'
             stage('Clean') {
-            sh 'sudo mvn clean'
-            }
-	    stage('Compile') {
-            sh 'sudo mvn compile'
+            sh 'mvn clean'
             }
             stage('Test') {
-            sh 'sudo mvn test'
+            sh 'mvn test'
             }
             stage('Package') {
-            sh 'sudo mvn package'
+            sh 'mvn package'
             }
-			
+			stage('Build Docker Image'){
+				sh 'sudo docker build -t limbrit/initializr:0.0.1 .'
+			}
+			stage('Push Docker Image'){
+			withCredentials([string(credentialsId: 'docker-pwd', variable: 'Dockerpwd')]) {
+				sh "sudo docker login -u limbrit -p ${Dockerpwd}"
+				}
+   				sh 'sudo docker push limbrit/initializr:0.0.1'
+			}
+			stage('Running Docker on Local'){
+				sh 'sudo docker run -p 8085:8085 -d limbrit/initializr:0.0.1'
+			}
+            archiveArtifacts 'target/*.jar'
         
         notify('Success')
     } catch (err) {
