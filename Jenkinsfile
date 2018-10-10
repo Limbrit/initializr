@@ -18,7 +18,19 @@ node {
             stage('Package') {
             sh 'sudo mvn package'
             }
-			
+	    stage('Build Docker Image'){
+	    sh 'sudo docker build -t limbrit/my-app001:0.0.1 .'
+            }
+			stage('Push Docker Image'){
+			withCredentials([string(credentialsId: 'DockerHUB', variable: 'MyDockerHub')]) {
+				sh "sudo docker login -u limbrit -p ${MyDockerHub}"
+				}
+   				sh 'sudo docker push limbrit/my-app001:0.0.1'
+			}
+			stage('Running Docker on Local'){
+				sh 'sudo docker run -p 8099:8099 -d limbrit/my-app001:0.0.1'
+			}
+            archiveArtifacts 'target/*.jar'	
         
         notify('Success')
     } catch (err) {
