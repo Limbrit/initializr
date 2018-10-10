@@ -4,13 +4,10 @@ node {
         stage('checkout') {
             checkout scm
         } 
-	    sh 'sudo ./mvnw clean install'
+		sh 'sudo ./mvnw clean install'
 	    sh 'sudo ./mvnw clean install -Pfull'
             stage('Clean') {
             sh 'sudo mvn clean'
-            }
-	    stage('Compile') {
-            sh 'sudo mvn compile'
             }
             stage('Test') {
             sh 'sudo mvn test'
@@ -18,19 +15,19 @@ node {
             stage('Package') {
             sh 'sudo mvn package'
             }
-	    stage('Build Docker Image'){
-	    sh 'sudo docker build -t limbrit/my-app001:0.0.1 .'
-            }
+			stage('Build Docker Image'){
+				sh 'sudo docker build -t limbrit/initializr:0.0.1 .'
+			}
 			stage('Push Docker Image'){
 			withCredentials([string(credentialsId: 'DockerHUB', variable: 'MyDockerHub')]) {
 				sh "sudo docker login -u limbrit -p ${MyDockerHub}"
 				}
-   				sh 'sudo docker push limbrit/my-app001:0.0.1'
+   				sh 'sudo docker push limbrit/initializr:0.0.1'
 			}
 			stage('Running Docker on Local'){
-				sh 'sudo docker run -p 8099:8099 -d limbrit/my-app001:0.0.1'
+				sh 'sudo docker run -p 8097:8097 -d limbrit/initializr:0.0.1'
 			}
-            archiveArtifacts 'target/*.jar'	
+            archiveArtifacts 'initializr-generator/target/*.jar'
         
         notify('Success')
     } catch (err) {
